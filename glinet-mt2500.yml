@@ -1,20 +1,15 @@
 ---
-profile: glinet_axt1800
-target: ipq807x
-subtarget: ipq60xx
-description: Build image for the GL.iNET AXT1800
-image: bin/targets/ipq807x/ipq60xx/openwrt-ipq807x-glinet_axt1800-squashfs-sysupgrade.tar
+profile: glinet_gl-mt2500
+target: mediatek
+subtarget: mt7981
+description: Build image for the GL.iNET MT2500
 feeds:
-  - name: ipq807x
-    path: ../../feeds/ipq807x
-  - name: wifi_ax
-    path: ../../feeds/wifi-ax
-  - name: gl_feeds_common
+  - name: gl_feed_common
     uri: https://github.com/gl-inet/gl-feeds.git
     revision: f86ec7f77b7a36c96a9b5a9b7fea30ccc9ac5fe6
-  - name: luci
-    uri: https://github.com/openwrt/luci.git
-    revision: 1c3b32dc1bec15e3076a447762b1c4f94eb75fb7
+  - name: gl_feed_21_02
+    uri: https://github.com/gl-inet/gl-feeds.git
+    revision: 6b4d34ac72719c22de6e2c365b476e5e9bef18ca
   - name: kenzok8_packages
     uri: https://github.com/kenzok8/openwrt-packages.git
     branch: master
@@ -27,12 +22,30 @@ feeds:
     uri: https://github.com/kenzok8/small-package.git
     branch: main
     revision: 15a79aee8bcc40bbb9292dff9373e569e86d1cc3
-include: []
 packages:
-  - kmod-hwmon-pwmfan
-  - wireless-regdb
-  - wget-ssl
-  - kmod-wireguard-backport
+  - tailscale:gl_feed_common
+  - fwdd
+  - mii_mgr
+  - losetup
+  - mkf2fs
+  - e2fsprogs
+  - blkid
+  - blockdev
+  - kmod-fs-ext4
+  - kmod-fs-f2fs
+  - kmod-fs-vfat
+  - kmod-nls-cp437
+  - regs
+  - switch
+  - mtk-base-files
+  - mtk_factory_rw
+  - ethtool
+  - kmod-mediatek_hnat
+  - kmod-mtfwd
+  - kmod-mtqos
+  - mtkhnat_util
+  - gdisk
+  - mmc-utils
   - luci-theme-argon
   - luci-app-argon-config
   - luci-app-ramfree

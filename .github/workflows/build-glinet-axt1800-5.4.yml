@@ -37,10 +37,11 @@ env:
   UPLOAD_WETRANSFER: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  OFFICIAL: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout
@@ -52,7 +53,7 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install build-essential libncurses5-dev gawk git libssl-dev gettext zlib1g-dev swig unzip time rsync python3 python3-setuptools python3-yaml -y
+        sudo -E apt-get -qq install python build-essential libncurses5-dev gawk git libssl-dev gettext zlib1g-dev swig unzip time rsync python3 python3-setuptools python3-yaml subversion -y
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
@@ -69,24 +70,34 @@ jobs:
         cd $GITHUB_WORKSPACE
         [ -e glinet-axt1800-5-4.yml ] && mv glinet-axt1800-5-4.yml /workdir/gl-infra-builder/profiles
 
-    - name: run setup.py
+    - name: run official setup.py
+      if: env.OFFICIAL == 'true'
       run: |
         cd /workdir/gl-infra-builder
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@github.com"
         python3 setup.py -c configs/config-wlan-ap-5.4.yml
-
-    - name: Download package
-      id: package
-      run: |
         cd /workdir/gl-infra-builder/wlan-ap/openwrt
         ./scripts/gen_config.py glinet-axt1800-5-4 glinet_depends
-        git clone https://github.com/gl-inet/glinet4.x.git -b main /workdir/glinet
+          git clone https://github.com/gl-inet/glinet4.x.git -b main /workdir/glinet
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
         cd /workdir/gl-infra-builder/wlan-ap/openwrt/files/etc
         echo "$(date +"%Y.%m.%d")" >./glversion
+
+    - name: run setup.py
+      if: env.OFFICIAL == 'false'
+      run: |
+        cd /workdir/gl-infra-builder
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@github.com"
+        python3 setup.py -c configs/config-wlan-ap-5.4.yml
+        cd /workdir/gl-infra-builder/wlan-ap/openwrt
+        ./scripts/gen_config.py glinet-axt1800-5-4 openwrt_common luci
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        make defconfig
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -95,12 +106,25 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-    - name: Compile the firmware
-      id: compile
+    - name: Official compile the firmware
+      id: official-compile
+      if: env.OFFICIAL == 'true'
       run: |
         cd /workdir/gl-infra-builder/wlan-ap/openwrt
         echo -e "$(nproc) thread compile"
         make -j$(expr $(nproc) + 1) GL_PKGDIR=/workdir/glinet/ipq60xx/ V=s
+        echo "::set-output name=status::success"
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+
+    - name: Compile the firmware
+      id: compile
+      if: env.OFFICIAL == 'false'
+      run: |
+        cd /workdir/gl-infra-builder/wlan-ap/openwrt
+        echo -e "$(nproc) thread compile"
+        make -j$(expr $(nproc) + 1)  V=s
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
@@ -151,7 +175,7 @@ jobs:
         touch release.txt
         echo "## 📦‍ 固件下载 | GLINET AXT1800 5.4" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "- 🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
-        echo -e "## ✨ 主要功能\n1. argon主题\n2. argon主题设置\n3. 释放内存\n4. wol 网络唤醒\n5. 磁盘管理工具\n6. smartdns DNS防污染\n7. clash的图形代理软件\n8. aria2下载工具\n9. ZeroTier内网穿透\n10. Turbo ACC 网络加速(支持 Fast Path 或者 硬件 NAT)\n11. 迅雷快鸟\n12. 应用过滤\n13. CPU 性能优化调节\n14. ttyd 终端\n15. passwall代理软件\n16. ssr-plus 代理软件\n17. 微信/Telegram推送\n18. BT下载工具\n19. 京东签到服务" >> release.txt
+        echo -e "## ✨ 主要功能\n1. argon主题\n2. argon主题设置\n3. 释放内存\n4. wol 网络唤醒\n5. 磁盘管理工具\n6. smartdns DNS防污染\n7. clash的图形代理软件\n8. aria2下载工具\n9. ZeroTier内网穿透\n10. Turbo ACC 网络加速(支持 Fast Path 或者 硬件 NAT)\n11. 迅雷快鸟\n12. CPU 性能优化调节\n13. ttyd 终端\n14. 微信/Telegram推送\n15. BT下载工具" >> release.txt
         echo "::set-output name=status::success"
 
     - name: Upload firmware to release
@@ -174,7 +198,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.2.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled() && !failure()
       with:
-        keep_latest: 4
+        keep_latest: 9
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

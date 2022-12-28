@@ -1,18 +1,9 @@
 ---
-profile: glinet_ax1800
-target: ipq807x
-subtarget: ipq60xx
-description: Build image for the GL.iNET AX1800
-image: bin/targets/ipq807x/ipq60xx/openwrt-ipq807x-glinet_ax1800-squashfs-sysupgrade.tar
+profile: glinet_gl-mt1300
+target: ramips
+subtarget: mt7621
+description: Build image for the GL.iNET MT1300
 feeds:
-  - name: ipq807x
-    path: ../../feeds/ipq807x
-  - name: gl_feeds_common
-    uri: https://github.com/gl-inet/gl-feeds.git
-    branch: common
-  - name: luci
-    uri: https://github.com/openwrt/luci.git
-    revision: 1c3b32dc1bec15e3076a447762b1c4f94eb75fb7
   - name: kenzok8_packages
     uri: https://github.com/kenzok8/openwrt-packages.git
     branch: master
@@ -25,10 +16,7 @@ feeds:
     uri: https://github.com/kenzok8/small-package.git
     branch: main
     revision: fbcc7be7968c36fd6c6958a35e798d18d93d4733
-include:
-  - wifi-ax
 packages:
-  - wget-ssl
   - luci-theme-argon
   - luci-app-argon-config
   - luci-app-ramfree

@@ -1,1 +1,10 @@
 /.DS_Store
+
+gl-infra-builder
+kenzok8_packages
+immortalwrt_luci
+small_package
+
+node_modules
+package.json
+package-lock.json

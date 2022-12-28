@@ -11,22 +11,22 @@ feeds:
     path: ../../feeds/wifi-ax
   - name: gl_feeds_common
     uri: https://github.com/gl-inet/gl-feeds.git
-    revision: ca7c1c54636ea521b1452c443e1a0bb4deb41990
+    revision: f86ec7f77b7a36c96a9b5a9b7fea30ccc9ac5fe6
   - name: luci
     uri: https://github.com/openwrt/luci.git
     revision: 1c3b32dc1bec15e3076a447762b1c4f94eb75fb7
   - name: kenzok8_packages
     uri: https://github.com/kenzok8/openwrt-packages.git
     branch: master
-    revision: 24a5a38799ca481fb40473881bece396bdfbc837
+    revision: acea7be46975a5bf5a62cc6627a7168fe3252a20
   - name: immortalwrt_luci
     uri: https://github.com/immortalwrt/luci.git
     branch: openwrt-21.02
-    revision: a0d1ff9b19bf1dede8123c68ca4eae82c3d2da84
-  - name: kiddin9
-    uri: https://github.com/kiddin9/openwrt-packages.git
-    branch: master
-    revision: f5f63a83c3d39048e50ed898757ab534a76fb7f8
+    revision: bed9148cccf9a639d7c9f6c544a216a9d3c3efe5
+  - name: small_package
+    uri: https://github.com/kenzok8/small-package.git
+    branch: main
+    revision: 15a79aee8bcc40bbb9292dff9373e569e86d1cc3
 include: []
 packages:
   - wireless-regdb
@@ -43,11 +43,7 @@ packages:
   - luci-app-zerotier
   - luci-app-turboacc
   - luci-app-xlnetacc
-  - luci-app-appfilter
   - luci-app-cpufreq
   - luci-app-ttyd
-  - luci-app-passwall
-  - luci-app-ssr-plus
   - luci-app-serverchan
   - luci-app-transmission
-  - luci-app-jd-dailybonus

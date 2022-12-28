@@ -22,18 +22,23 @@ module.exports = [
     branch: 'openwrt-21.02',
   },
   {
-    name: 'kiddin9',
-    uri: 'https://github.com/kiddin9/openwrt-packages.git',
-    branch: 'master',
+    name: 'small_package',
+    uri: 'https://github.com/kenzok8/small-package.git',
+    branch: 'main',
   },
+//   {
+//     name: 'kiddin9',
+//     uri: 'https://github.com/kiddin9/openwrt-packages.git',
+//     branch: 'master',
+//   },
 //   {
 //     name: 'jd_dailybonus',
 //     uri: 'https://github.com/jerrykuku/luci-app-jd-dailybonus',
 //     branch: 'master',
 //   },
-  // {
-  //   name: 'lienol_packages',
-  //   uri: 'https://github.com/Lienol/openwrt-package.git',
-  //   branch: 'main',
-  // },
+//   {
+//     name: 'lienol_packages',
+//     uri: 'https://github.com/Lienol/openwrt-package.git',
+//     branch: 'main',
+//   },
 ];
