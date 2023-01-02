@@ -12,19 +12,19 @@ feeds:
     branch: common
   - name: luci
     uri: https://github.com/openwrt/luci.git
-    revision: 1c3b32dc1bec15e3076a447762b1c4f94eb75fb7
+    revision: f470452c4a1c478caf1bbbc19568c523e203e8dc
   - name: kenzok8_packages
     uri: https://github.com/kenzok8/openwrt-packages.git
     branch: master
-    revision: cde9b3f918c1d2e9b5283305b9f855f44787cd92
+    revision: 1c27851c7d4d8b296bfb69868e39d6b5022d65a2
   - name: immortalwrt_luci
     uri: https://github.com/immortalwrt/luci.git
     branch: openwrt-21.02
-    revision: 2122588ed5b0637e0f4f50de359925f6e0f60bd2
+    revision: d2342517c7258c8a0211f71265812c1f0d52658d
   - name: small_package
     uri: https://github.com/kenzok8/small-package.git
     branch: main
-    revision: fbcc7be7968c36fd6c6958a35e798d18d93d4733
+    revision: 56ba4b4005bbcaa4d6fca6f2c6ef2a3119a3aa03
 include:
   - wifi-ax
 packages:
@@ -43,14 +43,3 @@ packages:
   - luci-app-transmission
   - luci-app-ssr-plus
   - luci-app-adguardhome
-  
-diffconfig: |
-  CONFIG_PACKAGE_wpad-basic=n
-  CONFIG_PACKAGE_wpad=n
-  CONFIG_PACKAGE_dnsmasq=n
-  CONFIG_PACKAGE_luci-i18n-adguardhome-zh-cn=y
-  CONFIG_PACKAGE_luci-i18n-ddns-zh-cn=y
-  CONFIG_LUCI_LANG_zh_Hans=y
-  CONFIG_BUSYBOX_CUSTOM=y
-  CONFIG_BUSYBOX_CONFIG_FEATURE_FLOAT_SLEEP=y
-  CONFIG_KERNEL_IPQ_MEM_PROFILE=0
