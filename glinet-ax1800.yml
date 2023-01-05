@@ -47,3 +47,5 @@ packages:
   - luci-app-ttyd
   - luci-app-serverchan
   - luci-app-transmission
+  - luci-app-adguardhome
+  - luci-app-ssr-plus
