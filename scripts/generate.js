@@ -35,6 +35,8 @@ const exec = require('child_process').execSync;
  const GenerateFeedsConfig = (name, uri, branch) => {
   exec(`git clone --depth=1 ${uri} -b ${branch} ${name}`);
   const revision = exec(`cd ${name} && git log -1 --pretty=%H`).toString().trim();
+  exec(`cd ..`);
+  exec(`rm -rf ${name}`);
   return {
     name: name.trim(),
     uri: uri.trim(),
@@ -109,7 +111,6 @@ const GenerateYml = (workflows) => {
       template = template.replace(/\$\{build\}/g, build);
       template = template.replace(/\$\{model\}/g, workflow.model);
       template = template.replace(/\$\{config\}/g, workflow.config);
-      template = template.replace(/\$\{official\}/g, workflow.official);
       template = template.replace(/\$\{modelUpper\}/g, workflow.model.toUpperCase());
       template = template.replace(/\$\{releaseTitle\}/g, `## 📦‍ 固件下载 | ${workflowName.replace('build-', '').toUpperCase().replace(/-/g, ' ')}`);
       template = template.replace(/\$\{releasePackages\}/g, JSON.stringify([
@@ -129,7 +130,6 @@ const GenerateYml = (workflows) => {
   } finally {
      // 清理文件
      exec(`rm -rf gl-infra-builder`);
-     require('./feeds').forEach(item => exec(`rm -rf ${item.name}`));
      exec(`rm -rf node_modules`);
      exec(`rm -rf package-lock.json`);
      exec(`rm -rf package.json`);
