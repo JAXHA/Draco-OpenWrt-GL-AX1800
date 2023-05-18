@@ -77,13 +77,13 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@github.com"
         python3 setup.py -c configs/config-mt798x-7.6.6.1.yml
-        cd /workdir/gl-infra-builder/mt798x/
+        cd /workdir/gl-infra-builder/mt7981/
         ./scripts/gen_config.py glinet-mt2500 glinet_depends
           git clone https://github.com/gl-inet/glinet4.x.git -b main /workdir/glinet
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
-        cd /workdir/gl-infra-builder/mt798x//files/etc
+        cd /workdir/gl-infra-builder/mt7981//files/etc
         echo "$(date +"%Y.%m.%d")" >./glversion
 
     - name: run setup.py
@@ -93,7 +93,7 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@github.com"
         python3 setup.py -c configs/config-mt798x-7.6.6.1.yml
-        cd /workdir/gl-infra-builder/mt798x/
+        cd /workdir/gl-infra-builder/mt7981/
         ./scripts/gen_config.py glinet-mt2500 openwrt_common luci
         ./scripts/feeds update -a
         ./scripts/feeds install -a
@@ -110,7 +110,7 @@ jobs:
       id: official-compile
       if: env.OFFICIAL == 'true'
       run: |
-        cd /workdir/gl-infra-builder/mt798x/
+        cd /workdir/gl-infra-builder/mt7981/
         echo -e "$(nproc) thread compile"
         make -j$(expr $(nproc) + 1) GL_PKGDIR=/workdir/glinet/mt7981/ V=s
         echo "::set-output name=status::success"
@@ -122,7 +122,7 @@ jobs:
       id: compile
       if: env.OFFICIAL == 'false'
       run: |
-        cd /workdir/gl-infra-builder/mt798x/
+        cd /workdir/gl-infra-builder/mt7981/
         echo -e "$(nproc) thread compile"
         make -j$(expr $(nproc) + 1)  V=s
         echo "::set-output name=status::success"
@@ -139,13 +139,13 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: /workdir/gl-infra-builder/mt798x//bin
+        path: /workdir/gl-infra-builder/mt7981//bin
 
     - name: Organize files
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled() && !failure()
       run: |
-        cd /workdir/gl-infra-builder/mt798x//bin/targets/mediatek/mt7981
+        cd /workdir/gl-infra-builder/mt7981//bin/targets/mediatek/mt7981
         echo $PWD
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
