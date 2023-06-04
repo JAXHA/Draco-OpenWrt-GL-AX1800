@@ -21,15 +21,15 @@ feeds:
   - name: kenzok8_packages
     uri: https://github.com/kenzok8/openwrt-packages.git
     branch: master
-    revision: b349478d85b2f83c1108bfb1784e0a4f5f43ca7c
+    revision: fcb74dac11187967b776ae41cf82e6e976cb9214
   - name: immortalwrt_luci
     uri: https://github.com/immortalwrt/luci.git
     branch: openwrt-21.02
-    revision: d869ffbd52291de9c543fd74ab1a3179bc6b2b68
+    revision: 78f9ce9698d3ef15a365267161152cd84a4c73f8
   - name: small_package
     uri: https://github.com/kenzok8/small-package.git
     branch: main
-    revision: fa4881f4ab598e1bede5b3d55db1bb351c6c7fd8
+    revision: cdbdc327385d313f41af37cbea64e2513854eac5
 include: []
 packages:
   - kmod-hwmon-pwmfan
