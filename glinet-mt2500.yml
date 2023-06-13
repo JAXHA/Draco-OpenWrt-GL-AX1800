@@ -21,7 +21,7 @@ feeds:
   - name: small_package
     uri: https://github.com/kenzok8/small-package.git
     branch: main
-    revision: dea54c1ecd35f066182123fa077d29c0c2fea6c3
+    revision: 737d460c0c2ba6abe8c66afeb3fca75fa2210e82
 packages:
   - tailscale:gl_feed_common
   - fwdd
