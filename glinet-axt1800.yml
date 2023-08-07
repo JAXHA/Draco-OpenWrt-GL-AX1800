@@ -14,22 +14,22 @@ feeds:
     path: ../../feeds/wifi-ax
   - name: gl_feed_common
     uri: https://github.com/gl-inet/gl-feeds.git
-    revision: 9654671f8960795787cbd70e827f9c9afeac1d38
+    revision: c924c76a4161d31587ccb6ae0dc160ba1aea0791
   - name: luci
     uri: https://github.com/openwrt/luci.git
     revision: 1c3b32dc1bec15e3076a447762b1c4f94eb75fb7
   - name: kenzok8_packages
     uri: https://github.com/kenzok8/openwrt-packages.git
     branch: master
-    revision: d7be4a078877212954355453e1e09fce93a549dd
+    revision: 9748ef62aa33d261d7d83b152626ecb4a190a0a1
   - name: immortalwrt_luci
     uri: https://github.com/immortalwrt/luci.git
     branch: openwrt-21.02
-    revision: 0d1a03d5cae511ba8ef9ae90dddd4ac458fb8aea
+    revision: eedd2897ecf2311306fb6b0bd9296c7b3891e26d
   - name: small_package
     uri: https://github.com/kenzok8/small-package.git
     branch: main
-    revision: 002d153aaf2550283dd71640073460e57df773f1
+    revision: bc4d1cfe7082073a939a2cb9d55fc35013413cb3
 include: []
 packages:
   - kmod-hwmon-pwmfan
